@@ -2,36 +2,36 @@ const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
     firstName: {
-        type:string,
+        type:String,
         required:true,
     },
     lastName: {
-        type:string,
+        type:String,
         required:true,
     },
     email:{
-        type: string,
+        type: String,
         required: true,
         unique: true,
     },
     userName: {
-        type: string,
+        type: String,
         required: true,
         unique: true,
     },
     likedSongs: {
         // Need to be changed
-        type:string,
+        type:String,
         default: "",
     },
     likedPlaylists:{
         // Need To be Changed
-        type:string,
+        type:String,
         default: "",
     },
     subscribedArtists:{
         // Need To be Changed
-        type:string,
+        type:String,
         default: "",
     },
 });
