@@ -18,6 +18,9 @@ const songSchema= new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: "user"
     },
+},
+{
+    timestamps: true,
 });
 
 const songModel = mongoose.model("Song", songSchema);
