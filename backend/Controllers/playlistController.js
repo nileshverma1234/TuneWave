@@ -56,4 +56,13 @@ const addSong= asyncHandler(async (req, res)=>{
     return res.status(200).json(playlist);
 });
 
-module.exports = {createPlaylist, getPlaylistById, getPlaylistByArtist, addSong};
+const getMe = asyncHandler(async (req,res)=>{
+    const artistId = req.user._id;
+    const playlist = await Playlist.find({owner: artistId}).populate(
+        "owner"
+    );
+    return res.status(200).json({data: playlists});
+});
+
+
+module.exports = {createPlaylist, getPlaylistById, getPlaylistByArtist, addSong, getMe};
