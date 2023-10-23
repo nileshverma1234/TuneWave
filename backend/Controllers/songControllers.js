@@ -1,5 +1,6 @@
 const asyncHandler = require("express-async-handler");
 const Song = require("../Model/songModel");
+const User = require("../Model/userModel");
 
 const newSong = asyncHandler(async (req,res)=>{
     const {name, thumbnail,track}= req.body;
@@ -19,4 +20,22 @@ const getSongs = asyncHandler(async (req, res)=>{
     return res.status(200).json({data:songs});
 });
 
-module.exports= {newSong, getSongs};
+const getSongsByArtist = asyncHandler(async (req, res)=>{
+    const {artistId}=req.params;
+    const artist = await User.findOne({_id:artistId});
+    if (!artist) {
+        return res.status(301).json({Error:"Artist Does Not Exist"});
+    }
+    const songs = await Song.find({artist:artistId});
+    return res.status(200).json({data:songs});
+});
+
+const getSongsByName= asyncHandler(async (req,res)=>{
+    const {songName} =req.params;
+
+    // Do pattern matching here using Mongo Db
+    const song = await Song.find({name:songName});
+    return res.status(200).json({Data:song});
+});
+
+module.exports= {newSong, getSongs, getSongsByArtist, getSongsByName};
