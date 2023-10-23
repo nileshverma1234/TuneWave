@@ -7,37 +7,38 @@ const passport = require('passport');
 const User = require('./Model/userModel')
 const authentication = require('./Routes/authentication');
 const { notFound, errorHandler } = require('./Middleware/errorMiddle');
+const song = require('./Routes/song');
+const pass =require('./config/pport');
+
 dotenv.config();
 const Port = process.env.PORT ;
-connectDB();
 
 const app=express();
-
-
-// passport.use(new JwtStrategy(
-//     {
-//         jwtFromRequest : ExtractJwt.fromAuthHeaderAsBearerToken(),
-//         secretOrKey : process.env.Passport_Secret,
-//     }, function(jwt_payload, done) 
-//     {
-//         User.findOne({id: jwt_payload.sub}, function(err, user) {
-//             if (err) {
-//                 return done(err, false);
-//             }
-//             if (user) {
-//                 return done(null, user);
-//             } else {
-//                 return done(null, false);
-//                 // or you could create a new account
-//             }
-//         });
-//     }
-// ));
-
-// For checking server 
 app.use(express.json());
-app.use("/auth", authentication);
 
+connectDB();
+
+pass();
+
+// var opts = {};
+// opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
+// opts.secretOrKey = process.env.JWT_secret;
+// passport.use(new JwtStrategy(opts, async function (jwt_payload, done) {
+//     try {
+//         const user = await User.findOne({ id: jwt_payload.sub });
+//         if (user) {
+//             return done(null, user);
+//         } else {
+//             return done(null, false);
+//         }
+//     } catch (err) {
+//         return done(err, false);
+//     }
+//  }));
+
+
+app.use("/auth", authentication);
+app.use("/song", song);
 
 
 app.get('/',(req,res)=>{

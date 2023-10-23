@@ -6,20 +6,17 @@ const registerUser = asyncHandler(async (req,res)=>{
     const {firstName, lastName, email, userName, password} = req.body;
     
     if(!firstName || !lastName || !email || !userName){
-        res.status(400);
-        throw new Error("Please Enter All The Fields");
+        res.status(400).json({error:"Every frild is required"});
     }
 
     const userExist =await User.findOne({email:email});
     if(userExist){
-        res.status(400);
-        throw new Error("User Already exist with this email");
+        res.status(400).json({error:"User Already exist with this email"});
     }
 
     const usernameExist =await User.findOne({userName:userName});
     if(usernameExist){
-        res.status(400);
-        throw new Error("UserName Already exist please try another Username");
+        res.status(400).json({error:"UserName Already exist please try another Username"});
     }
 
     const user = await User.create({
