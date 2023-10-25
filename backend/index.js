@@ -6,11 +6,13 @@ const song = require('./Routes/song');
 const playlistRoutes = require('./Routes/playlist');
 const { notFound, errorHandler } = require('./Middleware/errorMiddle');
 const pass =require('./config/pport');
+const cors = require('cors');
 
 dotenv.config();
 const Port = process.env.PORT ;
 
 const app=express();
+app.use(cors());
 app.use(express.json());
 
 connectDB();
