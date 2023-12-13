@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+    stages {
+        stage('SCM') {
+            steps {
+                checkout scm
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQube'
+                    withSonarQubeEnv('SonarQube') {
+                            sh "${scannerHome}/bin/sonar-scanner"
+                 }
+             }
+            }
+        }
+           stage('Build Docker Image') {
+            steps {
+                script {
+                        sh 'docker stop $(docker ps -q --filter ancestor=app:latest) || true'
+                sh 'docker rm $(docker ps -a -q --filter ancestor=app:latest) || true'
+                        sh 'docker build -t app:latest .'
+                      
+                }
+            }
+        }
+
+        stage('Start Docker Container') {
+            steps {
+                script {
+                    // Run the Docker container
+                    sh 'docker run -d -p 3000:3000 app:latest'
+                }
+            }
+        }
+    }
+
+
+   
+}
+
