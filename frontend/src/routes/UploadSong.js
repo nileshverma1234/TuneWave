@@ -1,9 +1,31 @@
+import {useState} from "react";
 import { Icon } from "@iconify/react";
 import IconText from "../components/shared/IconText";
+import CloudinaryUpload from '../components/shared/CloudinaryUpload';
 import TextWithHover from "../components/shared/TextWithHover";
 import TextInput from "../components/shared/TextInput";
+import {makeAuthenticatedPOSTRequest} from "../utils/serverHelpers"; 
+import {useNavigate} from "react-router-dom";
 
 const UploadSong =()=>{
+    const[name, setName] = useState("");
+    const[thumbnail, setThumbnail] = useState("");
+    const[playlistUrl, setPlaylistUrl] = useState("");
+    const[uploadedSongFileName, setUploadedSongFileName] = useState();
+    const navigate = useNavigate();
+
+    const submitSong =async()=> {
+       const data = {name,thumbnail,track: playlistUrl};
+       const response = await makeAuthenticatedPOSTRequest("/song/create", data);
+       if(response.err) {
+        alert("Could not upload");
+        return;
+       }
+       console.log(response);
+       alert("Success");
+       navigate("/home");
+    };
+
     return(
         <div className="h-full w-full flex">
             <div className="h-full w-1/5  bg-black">
@@ -55,6 +77,8 @@ const UploadSong =()=>{
                                 label="Song Name" 
                                 labelClassName="text-white" 
                                 placeholder="Name"
+                                value = {name}
+                                setValue = {setName}
                             />
                         </div>
                         <div className="w-1/2">
@@ -62,10 +86,27 @@ const UploadSong =()=>{
                                 label="Thumbnail" 
                                 labelClassName="text-white" 
                                 placeholder="Thumbanail"
+                                value = {thumbnail}
+                                setValue = {setThumbnail}
                             />
                         </div>
-                        
                     </div>
+                        <div className = "py-5">
+                            {uploadedSongFileName ? 
+                            (
+                                <div className = "bg-white text-black rounded-full p-3 w-1/3">
+                                    {uploadedSongFileName.substring(0, 45)}...
+                                    </div>
+                            ):(
+                            <CloudinaryUpload 
+                                setUrl = {setPlaylistUrl} 
+                                setName = {setUploadedSongFileName}
+                            />
+                            )}
+                        </div>
+                        <div className = "bg-white text-black rounded-full w-40 flex items-center justify-center p-4 cursor-pointer font-bold"  onClick= {submitSong}>
+                            Submit Song
+                        </div>
                 </div>   
             </div>
         </div>

@@ -1,0 +1,1 @@
+export const cloudinary_upload_preset = "gbzau82x";
