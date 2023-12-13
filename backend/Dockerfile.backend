@@ -3,12 +3,12 @@ FROM node:16-alpine3.11
 #Crea el directorio api
 WORKDIR /backend
 
-COPY ./package.json /
+COPY ./package.json /backend
 
 RUN npm install
 RUN npm i -g nodemon
 
-COPY . .
+COPY . /backend
 
 EXPOSE 5000
 CMD ["npm", "start"]
