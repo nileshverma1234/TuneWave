@@ -6,7 +6,7 @@ WORKDIR /app
 RUN pwd
 RUN ls -al
 
-COPY package.json /app
+COPY /var/lib/jenkins/workspace/TuneWave/backend/* /app
 
 RUN npm install
 RUN npm i -g nodemon
