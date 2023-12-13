@@ -11,33 +11,39 @@ pipeline {
                 script {
                     def scannerHome = tool 'SonarQube'
                     withSonarQubeEnv('SonarQube') {
-                            sh "${scannerHome}/bin/sonar-scanner"
-                 }
-             }
-            }
-        }
-           stage('Build Docker Image') {
-            steps {
-                script {
-                        sh 'docker stop $(docker ps -q --filter ancestor=app:latest) || true'
-                sh 'docker rm $(docker ps -a -q --filter ancestor=app:latest) || true'
-                        sh 'docker build -t app:latest .'
-                      
+                        sh "${scannerHome}/bin/sonar-scanner"
+                    }
                 }
             }
         }
-
-        stage('Start Docker Container') {
+        stage("verify tooling") {
             steps {
-                script {
-                    // Run the Docker container
-                    sh 'docker run -d -p 3000:3000 app:latest'
-                }
+                sh '''
+                    docker version
+                    docker info
+                    docker-compose version
+                    curl --version
+                    jq --version
+                '''
+            }
+        }
+        stage('Prune Docker data') {
+            steps {
+                sh 'docker system prune -a --volumes -f'
+                sh 'docker-compose down --remove-orphans -v'
+            }
+        }
+        stage('Start container') {
+            steps {
+                sh 'docker-compose build'
+                sh 'docker-compose up -d'
+                sh 'docker-compose ps'
             }
         }
     }
-
-
-   
+    post {
+        always {
+            sh 'docker-compose ps -a'
+        }
+    }
 }
-
