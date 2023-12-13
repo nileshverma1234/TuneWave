@@ -12,7 +12,7 @@ services:
   frontend:
     build:
       context: .
-      dockerfile: Dockerfile.frontend
+      dockerfile: frontend/Dockerfile.frontend
     ports:
       - "3000:3000"
     volumes:
