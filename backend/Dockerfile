@@ -1,7 +1,7 @@
 FROM node:16-alpine3.11
 
 #Crea el directorio api
-WORKDIR /
+WORKDIR /backend
 
 COPY package*.json ./
 
