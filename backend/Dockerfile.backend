@@ -1,16 +1,16 @@
 FROM node:16-alpine3.11
 
 #Crea el directorio api
-WORKDIR /backend
+WORKDIR /app
 
 RUN ls -al
 
-COPY package.json ./
+COPY package.json /app
 
 RUN npm install
 RUN npm i -g nodemon
 
-COPY . /backend
+COPY . /app
 
 EXPOSE 5000
 CMD ["npm", "start"]
