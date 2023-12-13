@@ -1,17 +1,16 @@
-FROM node:16-alpine3.11
+FROM node:alpine
 
-#Crea el directorio api
 WORKDIR /app
 
-RUN pwd
-RUN ls -al /var/lib/jenkins/workspace/TuneWave/backend/
+COPY ./package.json /app
 
-COPY /var/lib/jenkins/workspace/TuneWave/backend/* /app
+RUN npm install 
 
 RUN npm install
 RUN npm i -g nodemon
 
 COPY . /app
 
-EXPOSE 5000
 CMD ["npm", "start"]
+
+
