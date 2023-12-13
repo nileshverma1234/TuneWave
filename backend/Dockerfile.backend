@@ -3,6 +3,7 @@ FROM node:16-alpine3.11
 #Crea el directorio api
 WORKDIR /app
 
+RUN pwd
 RUN ls -al
 
 COPY package.json /app
