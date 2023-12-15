@@ -1,5 +1,5 @@
 import { Icon } from "@iconify/react";
-import { useContext, useState, useLayoutEffect, useRef } from "react";
+import { React, useContext, useState, useLayoutEffect, useRef } from "react";
 import { Howl, Howler } from 'howler';
 import IconText from "../components/shared/IconText";
 import TextWithHover from "../components/shared/TextWithHover";
@@ -12,8 +12,7 @@ const LoggedInContainer = ({ children, curActiveScreen }) => {
   
   const { currentSong, setCurrentSong, soundPlayed, setSoundPlayed, isPaused, setIsPaused } = useContext(songContext);
   
-
-    
+  
   const firstUpdate = useRef(true);
   
   useLayoutEffect(() => {
@@ -76,9 +75,9 @@ const LoggedInContainer = ({ children, curActiveScreen }) => {
         {/* This first div will be the left panel */}
         <div className="h-full w-1/5 bg-black flex flex-col justify-between pb-10">
           <div>
-            <div className="logo p-5  w-full flex justify-left">
-              <Icon icon="jam:music" color="white" width="100" />
-              <h1 className="text-white font-blue-500">TUNEWAVE</h1>
+            <div className="logo p-5  w-full flex justify-center items-center">
+            <Icon icon="simple-icons:tiktok" color = "white" width="100"/>
+              <h1 className="text-white font-blue-500 text-lg pl-4">TUNEWAVE</h1>
             </div>
             <div className="py-5">
               <IconText iconName={"iconamoon:home"} displayText={"Home"} active= {curActiveScreen === "home"} targetLink = {"/home"}/>
