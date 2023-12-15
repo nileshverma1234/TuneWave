@@ -84,7 +84,7 @@ const UploadSong =()=>{
                         <div className="w-1/2">
                             <TextInput 
                                 label="Thumbnail" 
-                                labelClassName="text-white" 
+                                labelClassName={"text-white"} 
                                 placeholder="Thumbanail"
                                 value = {thumbnail}
                                 setValue = {setThumbnail}

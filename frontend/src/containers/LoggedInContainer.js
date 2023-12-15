@@ -1,23 +1,34 @@
 import { Icon } from "@iconify/react";
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState, useLayoutEffect, useRef } from "react";
 import { Howl, Howler } from 'howler';
 import IconText from "../components/shared/IconText";
 import TextWithHover from "../components/shared/TextWithHover";
 import songContext from "../contexts/songContext";
+import CreatePlaylistModal from "../modals/CreatePlaylistModal";
 
-const LoggedInContainer = ({ children }) => {
-  const [soundPlayed, setSoundPlayed] = useState(null);
-  const [isPaused, setIsPaused] = useState(true);
-  const { currentSong, setCurrentSong } = useContext(songContext);
+const LoggedInContainer = ({ children, curActiveScreen }) => {
+
+  const [createPlaylistModalOpen, setCreatePlaylistModalOpen] = useState(false);
+  
+  const { currentSong, setCurrentSong, soundPlayed, setSoundPlayed, isPaused, setIsPaused } = useContext(songContext);
+  
 
     
-  useEffect(() => {
+  const firstUpdate = useRef(true);
+  
+  useLayoutEffect(() => {
+    // the following if statement will prevent the useeffect from running on first render.
+    
+    if(firstUpdate.current) {
+      firstUpdate.current = false;
+      return;
+    }
+
     if(!currentSong) {
         return;
     }
-
     changeSong(currentSong.track);
-  }, [currentSong]);
+  }, [currentSong && currentSong.track]);
 
 
   const playSound = () => {
@@ -56,38 +67,50 @@ const LoggedInContainer = ({ children }) => {
   };
 
   return (
-    <div className={`${currentSong ? "h-9/10" : "h-full"} w-full bg-app-black`}>
-      <div className="h-9/10 w-full flex">
-        <div className="h-full w-1/5  bg-black">
-          <div className="logo p-5  w-full flex justify-left">
-            <Icon icon="jam:music" color="white" width="100" />
-            <h1 className="text-white font-blue-500">TUNEWAVE</h1>
-          </div>
-          <div className="py-5">
-            <IconText iconName={"iconamoon:home"} displayText={"Home"} active targetLink = {"/home"}/>
-            <IconText iconName={"mingcute:search-line"} displayText={"Search"} />
-            <IconText iconName={"lucide:library"} displayText={"Your Library"} />
-            <IconText iconName={"mdi:music-box"} displayText={"My Music"} targetLink = "/myMusic"cd />
-          </div>
-          <div className="pt-5">
-            <IconText iconName={"octicon:plus-16"} displayText={"Create Playlist"} />
-            <IconText iconName={"icon-park-outline:like"} displayText={"Liked Songs"} />
+    <div className="h-full w-full bg-app-black">
+      { createPlaylistModalOpen && <CreatePlaylistModal closeModal={()=>{setCreatePlaylistModalOpen(false)
+      }} 
+      />}
+
+      <div className={`${currentSong ? "h-9/10" : "h-full"} w-full flex`}>
+        {/* This first div will be the left panel */}
+        <div className="h-full w-1/5 bg-black flex flex-col justify-between pb-10">
+          <div>
+            <div className="logo p-5  w-full flex justify-left">
+              <Icon icon="jam:music" color="white" width="100" />
+              <h1 className="text-white font-blue-500">TUNEWAVE</h1>
+            </div>
+            <div className="py-5">
+              <IconText iconName={"iconamoon:home"} displayText={"Home"} active= {curActiveScreen === "home"} targetLink = {"/home"}/>
+              <IconText iconName={"mingcute:search-line"} displayText={"Search"}  active= {curActiveScreen === "search"}  targetLink = {"/search"} />
+              <IconText iconName={"lucide:library"} displayText={"Your Library"}  active= {curActiveScreen === "yourLibrary"} />
+              <IconText iconName={"mdi:music-box"} displayText={"My Music"}  active= {curActiveScreen === "myMusic"} targetLink = "/myMusic"cd />
+            </div>
+            <div className="pt-5">
+              <IconText iconName={"octicon:plus-16"} displayText={"Create Playlist"} onClick = {()=> {setCreatePlaylistModalOpen(true);
+              }} 
+              />
+
+              <IconText iconName={"icon-park-outline:like"} displayText={"Liked Songs"} />
+            </div>
           </div>
         </div>
 
+        {/* This second div will be the right part(main content) */}
         <div className="h-full w-4/5 bg-gray-700 overflow-auto">
-          <div className="navabar w-full h-1/6 bg-black bg-opacity-40 flex justify-right">
+          <div className="navbar w-full h-1/10 bg-black bg-opacity-30 flex items-center justify-end">
             <div className="w-2/3 flex h-full">
-              <div className="flex">
+              <div className="w-2/3 flex justify-around items-center">
                 <TextWithHover displayText={"Premium"} />
                 <TextWithHover displayText={"Support"} />
                 <TextWithHover displayText={"Download"} />
+                <div className="h-1/2 border-r border-white"></div>
               </div>
 
               <div className="w-1/3 flex justify-around h-full items-center">
-                <TextWithHover displayText={"Upload Song"} />
+                <TextWithHover displayText={"Upload Song"}  />
                 <div className="bg-white h-10 w-10 flex items-center justify-center rounded-full font-semibold cursor-pointer">
-                  TV
+                  UT
                 </div>
               </div>
             </div>
@@ -147,10 +170,11 @@ const LoggedInContainer = ({ children }) => {
               />
             </div>
           </div>
-          <div className="w-1/4 flex justify-end">hello</div>
+          {/* <div className="w-1/4 flex justify-end">hello</div> */}
         </div>
       )}
-    </div>
+
+    </div> 
   );
 };
 

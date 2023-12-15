@@ -8,7 +8,7 @@ import LoggedInContainer from "../containers/LoggedInContainer";
 
 const Home = () => {
     return(
-        <LoggedInContainer>
+        <LoggedInContainer curActiveScreen ="home">
             <Playlistview titleText="Focus Shift" cardsData={focusCardData}/>
             <Playlistview titleText="TuneWave Playlist" cardsData={focusCardData}/>
             <Playlistview titleText="Sound Of India" cardsData={focusCardData}/>

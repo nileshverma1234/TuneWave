@@ -23,6 +23,9 @@ const getPlaylistById= asyncHandler(async (req,res)=>{
     return res.status(200).json({Data:playlist});
 });
 
+
+
+
 const getPlaylistByArtist= asyncHandler(async (req, res)=>{
     const { artistId } = req.params; 
     const artist = await User.findOne({_id: artistId});

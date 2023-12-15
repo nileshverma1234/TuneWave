@@ -34,7 +34,7 @@ const getSongsByName= asyncHandler(async (req,res)=>{
     const {songName} =req.params;
 
     // Do pattern matching here using Mongo Db
-    const song = await Song.find({name:songName});
+    const song = await Song.find({name:songName}).populate("artist");
     return res.status(200).json({Data:song});
 });
 
