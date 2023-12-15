@@ -107,7 +107,8 @@ const LoggedInContainer = ({ children, curActiveScreen }) => {
               </div>
 
               <div className="w-1/3 flex justify-around h-full items-center">
-                <TextWithHover displayText={"Upload Song"}  />
+                {/* <TextWithHover displayText={"Upload Song"}  /> */}
+                <IconText  displayText={"Upload Song"}  active= {curActiveScreen === "search"}  targetLink = {"/upload"}  />
                 <div className="bg-white h-10 w-10 flex items-center justify-center rounded-full font-semibold cursor-pointer">
                   UT
                 </div>
